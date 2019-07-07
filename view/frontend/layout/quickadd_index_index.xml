@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+    	<css src="Mageprince_QuickAdd::css/select2.min.css" />
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Mageprince\QuickAdd\Block\QuickAdd" name="custom_layout_load" template="Mageprince_QuickAdd::checkout/quickadd.phtml" />
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,16 @@
+<div class="block-quickadd">
+    <span class="title"><?= __('QuickAdd') ?></span>
+    <select class="multiple-product-sku" name="sku[]" multiple="multiple"></select>
+    <button class="quickadd action tocart primary"><?= __('Quick Add') ?></button>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "quickadd": {
+                "getSkuUrl" : "<?= $block->getAllSkuUrl() ?>",
+                "getAddToCartUrl" : "<?= $block->getAddToCartUrl() ?>"
+            }
+        }
+    }
+</script>
