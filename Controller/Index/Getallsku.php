@@ -37,10 +37,11 @@ class Getallsku extends \Magento\Framework\App\Action\Action
      */
     protected $_resultJson;
 
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
-     */
-    protected $_productCollectionFactory;
+    protected $helper;
+
+    protected $_resultPageFactory;
+
+    protected $quickAddBlock;
 
     /**
      * Getallsku constructor.
@@ -51,11 +52,15 @@ class Getallsku extends \Magento\Framework\App\Action\Action
     public function __construct(
         Context $context,
         \Magento\Framework\Controller\Result\JsonFactory $resultJson,
-        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+        \Mageprince\QuickAdd\Helper\Data $helper,
+        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
+        \Mageprince\QuickAdd\Block\QuickAdd $quickAddBlock
     ) {
         parent::__construct($context);
         $this->_resultJson = $resultJson;
-        $this->_productCollectionFactory = $productCollectionFactory;
+        $this->helper = $helper;
+        $this->_resultPageFactory = $resultPageFactory;
+        $this->quickAddBlock = $quickAddBlock;
     }
 
     public function execute()
@@ -63,14 +68,8 @@ class Getallsku extends \Magento\Framework\App\Action\Action
         if ($this->getRequest()->isAjax()) {
             $query = $this->getRequest()->getParam('q', false);
             $response['items'] = [];
-            $collection = $this->_productCollectionFactory->create();
-            $collection->addAttributeToFilter('sku', ['like' => '%'.$query.'%']);
-            $collection->setPageSize(20);
-            foreach ($collection as $product) {
-                if($product->isSaleable()) {
-                    $response['items'][]['id'] = $product->getSku();
-                }
-            }
+            $collection = $this->quickAddBlock->getProductCollection($query);
+            $response = $this->quickAddBlock->getOptions($collection);
             $resultJson = $this->_resultJson->create();
             return $resultJson->setData($response);
         }

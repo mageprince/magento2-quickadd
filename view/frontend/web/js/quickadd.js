@@ -37,9 +37,9 @@ define([
 
             function formatRepo(repo) {
                 if (repo.loading) {
-                    return repo.id;
+                    return repo.name;
                 }
-                var markup = repo.id;
+                var markup = repo.name + repo.image;
                 return markup;
             }
 

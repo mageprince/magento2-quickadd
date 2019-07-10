@@ -1,0 +1,24 @@
+<?php
+
+
+$response['items'] = [];
+$collection = $this->_productCollectionFactory->create();
+$collection->addAttributeToSelect('name');
+$collection->addAttributeToFilter('sku', ['like' => '%'.$query.'%']);
+$collection->addAttributeToSelect('thumbnail');
+$collection->setPageSize(20);
+$html = '';
+foreach ($collection as $key => $product) {
+    if($product->isSaleable()) {
+        $html = $product->getName();
+        $html .= $product->getSku();
+        $productImage = $this->helper->getProductImage($product);
+        $productImage = "<img src='$productImage' />";
+
+        $response['items'][] = array(
+            'id' => $product->getSku(),
+            'name' => $product->getName(),
+            'image' => $productImage
+        );
+    }
+}
